@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uncensored AI Suite | Private Chat, Roleplay & Image Analysis</title>
+    <meta name="description" content="Access free uncensored AI chat, advanced AI roleplay tools, and instant AI image analysis with no restrictions and no login required.">
+    <meta name="keywords" content="free uncensored AI chat, AI chatbot no filter free, roleplay AI chat no restrictions, free AI image analyzer online, no login AI tools free">
+    
+    <!-- Open Graph / SEO -->
+    <meta property="og:title" content="Free Uncensored AI Tools Online – Chat, Roleplay & Image Analysis">
+    <meta property="og:description" content="Instant access to unfiltered AI models. No login, no limits, 100% free.">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Canvas for Shader -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="drop-overlay" class="drop-overlay">
+        <div class="drop-content">
+            <div class="drop-icon">📂</div>
+            <h2>Drop Image to Analyze</h2>
+            <p>Release to upload to AI</p>
+        </div>
+    </div>
+    <!-- Dropdown portal - outside sidebar to escape backdrop-filter containing block -->
+    <div class="custom-select-dropdown" id="model-select-dropdown"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Left: Control Panel -->
+        <aside id="sidebar-left" class="glass-sidebar">
+            <div class="brand">
+                <div class="logo-icon">∞</div>
+                <h1>AnnoChat</h1>
+            </div>
+            
+            <nav class="tool-selector">
+                <h3>AI Tools</h3>
+                <button class="tool-btn active" data-tool="chat">
+                    <span class="icon">💬</span> Uncensored Chat
+                </button>
+                <button class="tool-btn" data-tool="roleplay">
+                    <span class="icon">🎭</span> Roleplay AI
+                </button>
+                <button class="tool-btn" data-tool="image">
+                    <span class="icon">🖼️</span> Image Analysis
+                </button>
+            </nav>
+            
+            <div class="model-selection">
+                <h3>Model Selection</h3>
+                <div class="custom-select-wrapper" id="model-select-wrapper">
+                    <button class="custom-select-trigger" id="model-select-trigger" type="button">
+                        <span class="trigger-text" id="model-select-label">Auto Free Model (Smart Selection)</span>
+                        <svg class="trigger-arrow" viewBox="0 0 24 24" fill="none">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <!-- Hidden native select -->
+                    <select id="model-select" class="glass-select">
+                        <option value="openrouter/free">Auto Free Model (Smart Selection)</option>
+                    </select>
+                </div>
+                
+                <div class="presets">
+                    <button class="preset-pill active">Creative</button>
+                    <button class="preset-pill">Balanced</button>
+                    <button class="preset-pill">Raw</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main id="main-chat" class="glass-main">
+            <header class="chat-header">
+                <div class="header-info">
+                    <h2 id="current-tool-name">Uncensored Chat</h2>
+                    <span class="status-badge"><span class="dot"></span> Online</span>
+                </div>
+                <button id="menu-toggle" class="mobile-only">☰</button>
+            </header>
+            
+            <div id="chat-window" class="chat-window">
+                <!-- Welcome Message -->
+                <div class="message ai-message">
+                    <div class="avatar">AI</div>
+                    <div class="content">
+                        <p>Welcome to the <strong>Uncensored AI Suite</strong>. I'm ready to assist you without restrictions. What's on your mind today?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container glass-card">
+                <div id="image-preview-area" class="image-preview-area"></div>
+                
+                <div class="input-wrapper">
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                    <button id="upload-btn" class="action-btn" title="Add Image (Drag & Drop anywhere)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <textarea id="chat-input" placeholder="Ask anything... (no restrictions)" rows="1"></textarea>
+                    <button id="send-btn" class="send-btn" title="Send (Enter)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-utils">
+                    <span id="token-count">0 tokens</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Sidebar Right: Credits & Social -->
+        <aside id="sidebar-right" class="glass-sidebar">
+            <div class="credits-panel glass-card">
+                <h3>Usage Limits</h3>
+                <div class="credit-stats">
+                    <div class="stat-row">
+                        <span>Credits Remaining</span>
+                        <span class="value">200 / 500</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 24%;"></div>
+                    </div>
+                    <p class="timer-text">Resets in 6 hours</p>
+                </div>
+                
+                <button class="upgrade-btn">Get Unlimited Access</button>
+                
+                <ul class="benefits-list">
+                    <li>✓ No usage limits</li>
+                    <li>✓ Faster response times</li>
+                    <li>✓ Priority model access</li>
+                </ul>
+            </div>
+            
+            <div class="system-info glass-card">
+                <h3>System Status</h3>
+                <div class="info-row">
+                    <span>Model Load</span>
+                    <span class="status-good">Low</span>
+                </div>
+                <div class="info-row">
+                    <span>Speed</span>
+                    <span class="status-good">240 tok/s</span>
+                </div>
+            </div>
+
+            <div class="chat-sidebar-actions glass-card">
+                <button id="new-chat" class="session-btn main">
+                    <span class="icon">＋</span> New Session
+                </button>
+                <button id="clear-chat" class="session-btn secondary">
+                    <span class="icon">🗑</span> Clear History
+                </button>
+            </div>
+            
+            <a href="index.html" class="home-link">← Return Home</a>
+        </aside>
+    </div>
+
+    <!-- Pricing Overlay Modal -->
+    <div id="pricing-modal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <button id="close-modal" class="close-btn">×</button>
+            <div class="pricing-header">
+                <h2>Choose Your Power</h2>
+                <p>Unlock the full potential of AnnoChat with our premium tiers.</p>
+            </div>
+            
+            <div class="pricing-container">
+                <div class="price-tab">
+                    <div class="price-title">Basic</div>
+                    <div class="price-amt">$0</div>
+                    <ul class="price-features">
+                        <li>✨ 200 Daily Credits</li>
+                        <li>🔓 Uncensored Access</li>
+                        <li>🖼️ Image IQ Support</li>
+                    </ul>
+                    <button class="modal-plan-btn secondary" id="continue-free">Continue Free</button>
+                </div>
+                
+                <div class="price-tab featured">
+                    <div class="price-badge">Popular</div>
+                    <div class="price-title">Pro</div>
+                    <div class="price-amt">$1</div>
+                    <ul class="price-features">
+                        <li>⚡ Unlimited Access</li>
+                        <li>🎨 Free Image Gen</li>
+                        <li>🚀 Priority Response</li>
+                    </ul>
+                    <button class="modal-plan-btn primary" id="get-unlimited">Get Unlimited</button>
+                </div>
+                
+                <div class="price-tab disabled">
+                    <div class="price-title">Ultra</div>
+                    <div class="price-amt">Soon</div>
+                    <ul class="price-features">
+                        <li>🛠️ API Access</li>
+                        <li>📦 Bulk Process</li>
+                        <li>🛡️ Max Privacy</li>
+                    </ul>
+                    <button class="modal-plan-btn" disabled>Coming Soon</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="background-shader.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
