@@ -2,8 +2,6 @@
 const state = {
     currentTool: 'chat',
     currentModel: 'openrouter/free',
-    credits: 200,
-    maxCredits: 500,
     openRouterApiKey: import.meta.env.VITE_OPENROUTER_API_KEY || '',
     databaseUrl: import.meta.env.VITE_DATABASE_URL || '', 
     userId: 'user_' + Math.random().toString(36).substr(2, 9),
@@ -34,18 +32,11 @@ const elements = {
     menuToggle: document.getElementById('menu-toggle'),
     sidebarLeft: document.getElementById('sidebar-left'),
     sidebarRight: document.getElementById('sidebar-right'),
-    progressBar: document.querySelector('.progress'),
-    creditValue: document.querySelector('.value'),
     imageUpload: document.getElementById('image-upload'),
     uploadBtn: document.getElementById('upload-btn'),
     imagePreviewArea: document.getElementById('image-preview-area'),
     inputWrapper: document.querySelector('.input-wrapper'),
     dropOverlay: document.getElementById('drop-overlay'),
-    pricingModal: document.getElementById('pricing-modal'),
-    closeModalBtn: document.getElementById('close-modal'),
-    upgradeBtn: document.querySelector('.upgrade-btn'),
-    continueFreeBtn: document.getElementById('continue-free'),
-    getUnlimitedBtn: document.getElementById('get-unlimited')
 };
 
 // Initialize App
@@ -81,9 +72,19 @@ function init() {
             if (!isOpen) {
                 // Position the fixed dropdown relative to the trigger
                 const rect = elements.selectTrigger.getBoundingClientRect();
-                elements.selectDropdown.style.top = (rect.bottom + 4) + 'px';
-                elements.selectDropdown.style.left = rect.left + 'px';
-                elements.selectDropdown.style.width = rect.width + 'px';
+                let top = rect.bottom + 4;
+                let left = rect.left;
+                let width = rect.width;
+
+                // Mobile adjustments
+                if (window.innerWidth <= 768) {
+                    left = 10;
+                    width = window.innerWidth - 20;
+                }
+
+                elements.selectDropdown.style.top = top + 'px';
+                elements.selectDropdown.style.left = left + 'px';
+                elements.selectDropdown.style.width = width + 'px';
                 elements.selectDropdown.classList.add('open');
                 elements.selectTrigger.classList.add('open');
             }
@@ -122,52 +123,10 @@ function init() {
         }
     });
 
-    // Allow clicking the credit values on mobile to see the right sidebar
-    elements.creditValue.parentNode.addEventListener('click', () => {
-        if (window.innerWidth <= 1024) toggleRightSidebar();
-    });
-
-    // Initial Load
     loadMessages('chat');
     fetchFreeModels();
-    
-    // Pricing Modal Setup
-    initPricingModal();
 }
 
-function initPricingModal() {
-    if (elements.upgradeBtn) {
-        elements.upgradeBtn.addEventListener('click', () => {
-            elements.pricingModal.classList.add('active');
-        });
-    }
-
-    if (elements.closeModalBtn) {
-        elements.closeModalBtn.addEventListener('click', () => {
-            elements.pricingModal.classList.remove('active');
-        });
-    }
-
-    if (elements.continueFreeBtn) {
-        elements.continueFreeBtn.addEventListener('click', () => {
-            elements.pricingModal.classList.remove('active');
-            sessionStorage.setItem('pricingShown', 'true');
-        });
-    }
-
-    if (elements.getUnlimitedBtn) {
-        elements.getUnlimitedBtn.addEventListener('click', () => {
-            alert("Checkout system coming soon! You will be able to upgrade to Pro for $1.");
-        });
-    }
-
-    // Auto-show on first load in session
-    if (!sessionStorage.getItem('pricingShown')) {
-        setTimeout(() => {
-            elements.pricingModal.classList.add('active');
-        }, 1500); // Slight delay for effect
-    }
-}
 
 // Fetch and Cache Free Models
 async function fetchFreeModels() {
@@ -372,7 +331,7 @@ window.addEventListener('resize', () => {
 // Chat Logic
 async function handleSend() {
     const content = elements.chatInput.value.trim();
-    if ((!content && !state.pendingImage) || state.credits <= 0) return;
+    if (!content && !state.pendingImage) return;
 
     // 1. Add User Message (Handle Multimodal)
     const userMsgDiv = addMessage('user', content || (state.pendingImage ? "[Image Attached]" : ""));
@@ -392,9 +351,6 @@ async function handleSend() {
     elements.chatInput.style.height = 'auto';
     elements.imagePreviewArea.innerHTML = '';
     state.pendingImage = null;
-
-    // 2. Update Credits
-    updateCredits(sentImage ? -15 : -5);
 
     // 3. Show AI Typing
     const typingMessage = addMessage('ai', '...', true);
@@ -420,9 +376,6 @@ async function handleSend() {
             role: 'ai',
             content: finalResponse,
             model: state.currentModel
-        });
-        logToDatabase('UPDATE_LIMIT', {
-            usageCount: state.credits
         });
 
     } catch (error) {
@@ -622,12 +575,6 @@ async function logToDatabase(action, payload) {
     }
 }
 
-function updateCredits(amount) {
-    state.credits = Math.max(0, state.credits + amount);
-    elements.creditValue.textContent = `${state.credits} / ${state.maxCredits}`;
-    const percentage = (state.credits / state.maxCredits) * 100;
-    elements.progressBar.style.width = `${percentage}%`;
-}
 
 // Image Handling Logic
 function handleFileSelect(e) {

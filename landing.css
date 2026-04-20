@@ -440,7 +440,137 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .hero h1 { font-size: 2.5rem; }
-    .nav-links { display: none; }
-    .faq-grid { grid-template-columns: 1fr; }
+    :root {
+        --fs-h1: clamp(2.2rem, 10vw, 3rem);
+        --fs-h2: clamp(1.6rem, 7vw, 2.2rem);
+    }
+
+    .container {
+        padding: 0 20px;
+    }
+
+    header {
+        padding: 20px 0;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        height: 100vh;
+        background: rgba(10, 5, 20, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        z-index: 1100;
+    }
+
+    .mobile-menu-toggle svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .hero {
+        padding: 100px 0 60px;
+    }
+
+    .cta-group {
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .feature-card {
+        padding: 32px 24px;
+    }
+
+    .seo-section {
+        padding: 60px 0;
+    }
+
+    .seo-block h2 {
+        font-size: 1.8rem;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 20px 0;
+        border-radius: 12px;
+        border: 1px solid var(--glass-border);
+    }
+
+    .seo-table {
+        margin: 0;
+        min-width: 600px;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .pricing-card.featured {
+        transform: none;
+    }
+
+    .pricing-card.featured:hover {
+        transform: translateY(-10px);
+    }
+
+    .comparison-container {
+        flex-direction: column;
+    }
+
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .landing-model-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
 }
+
+.mobile-menu-toggle {
+    display: none;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+}
+

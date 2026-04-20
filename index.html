@@ -31,11 +31,15 @@
             <div class="logo">∞ AnnoChat</div>
             <nav class="nav-links">
                 <a href="#features">Features</a>
-                <a href="#pricing">Pricing</a>
                 <a href="#comparison">Compare</a>
                 <a href="#faq">FAQ</a>
                 <a href="chat.html" class="btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">Launch Chat</a>
             </nav>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
         </header>
 
         <section class="hero">
@@ -95,42 +99,44 @@
 
             <div id="comparison" class="seo-block">
                 <h2>Direct Comparison</h2>
-                <table class="seo-table">
-                    <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th>AnnoChat</th>
-                            <th>Typical AI Platforms</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Free Access</td>
-                            <td>Yes (200 Credits)</td>
-                            <td>Limited / Tiered</td>
-                        </tr>
-                        <tr>
-                            <td>No Account Required</td>
-                            <td>Yes (Privacy First)</td>
-                            <td>No (Login Required)</td>
-                        </tr>
-                        <tr>
-                            <td>Uncensored Responses</td>
-                            <td>Full Freedom</td>
-                            <td>Strictly Filtered</td>
-                        </tr>
-                        <tr>
-                            <td>Usage Limits</td>
-                            <td>200 Credits Free</td>
-                            <td>Daily Caps</td>
-                        </tr>
-                        <tr>
-                            <td>Fast Performance</td>
-                            <td>Optimized Edge</td>
-                            <td>Often Slow for Free</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="seo-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>AnnoChat</th>
+                                <th>Typical AI Platforms</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Free Access</td>
+                                <td>Yes (Unlimited)</td>
+                                <td>Limited / Tiered</td>
+                            </tr>
+                            <tr>
+                                <td>No Account Required</td>
+                                <td>Yes (Privacy First)</td>
+                                <td>No (Login Required)</td>
+                            </tr>
+                            <tr>
+                                <td>Uncensored Responses</td>
+                                <td>Full Freedom</td>
+                                <td>Strictly Filtered</td>
+                            </tr>
+                            <tr>
+                                <td>Usage Limits</td>
+                                <td>Unlimited Free</td>
+                                <td>Daily Caps</td>
+                            </tr>
+                            <tr>
+                                <td>Fast Performance</td>
+                                <td>Optimized Edge</td>
+                                <td>Often Slow for Free</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="intro-section seo-block">
@@ -167,50 +173,6 @@
                             <li>• Qwen 2.5 (Multilingual)</li>
                             <li>• Gemma 2 (Efficient Logic)</li>
                         </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="pricing" class="seo-block">
-                <h2>Simple, Transparent Pricing</h2>
-                <p>Choose the plan that fits your creative needs. Start for free and upgrade for unlimited power.</p>
-                
-                <div class="pricing-grid">
-                    <div class="pricing-card">
-                        <div class="plan-name">Basic</div>
-                        <div class="plan-price">$0<span>/forever</span></div>
-                        <ul class="plan-features">
-                            <li>✨ 200 Daily Credits</li>
-                            <li>🔓 All Uncensored Models</li>
-                            <li>🖼️ Image Analysis Support</li>
-                            <li>👤 No Account Required</li>
-                        </ul>
-                        <a href="chat.html" class="btn-secondary">Start Free</a>
-                    </div>
-                    
-                    <div class="pricing-card featured">
-                        <div class="badge">Best Value</div>
-                        <div class="plan-name">Pro</div>
-                        <div class="plan-price">$1<span>/unlimited access</span></div>
-                        <ul class="plan-features">
-                            <li>⚡ Unlimited Access</li>
-                            <li>🎨 Free Image Generation</li>
-                            <li>🚀 Priority Response Speed</li>
-                            <li>💎 Advanced Model Access</li>
-                        </ul>
-                        <a href="chat.html" class="btn-primary">Get Unlimited</a>
-                    </div>
-                    
-                    <div class="pricing-card">
-                        <div class="plan-name">Ultra</div>
-                        <div class="plan-price">Coming Soon</div>
-                        <ul class="plan-features">
-                            <li>🛠️ API Access</li>
-                            <li>📦 Bulk Processing</li>
-                            <li>🔧 Custom Model Tuning</li>
-                            <li>🛡️ Enterprise Privacy</li>
-                        </ul>
-                        <button class="btn-secondary" disabled>Coming Soon</button>
                     </div>
                 </div>
             </div>
@@ -397,7 +359,22 @@
         }
         generateStars('stars', 700);
         generateStars('stars2', 200);
-        generateStars('stars3', 100);
+        // Mobile Menu Toggle logic
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+            
+            // Close menu when clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+        }
 
         (async () => {
             const grid = document.getElementById('landing-model-grid');
