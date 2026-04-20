@@ -131,24 +131,27 @@ const geometry = new THREE.PlaneGeometry(2, 2);
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
-// 5. Setup lil-gui Control Panel (Closed by default)
-const gui = new GUI({ title: 'Shader Settings' });
-gui.close();
+// 5. Setup lil-gui Control Panel (Only on Desktop, Closed by default)
+let gui;
+if (window.innerWidth > 768) {
+    gui = new GUI({ title: 'Shader Settings' });
+    gui.close();
 
-const optFolder = gui.addFolder('Optics & Dispersion');
-optFolder.add(uniforms.uDispersion, 'value', 0.0, 1.0, 0.01).name('RGB Separation');
-optFolder.add(uniforms.uRefraction, 'value', 0.0, 1.0, 0.01).name('Glass Refraction');
+    const optFolder = gui.addFolder('Optics & Dispersion');
+    optFolder.add(uniforms.uDispersion, 'value', 0.0, 1.0, 0.01).name('RGB Separation');
+    optFolder.add(uniforms.uRefraction, 'value', 0.0, 1.0, 0.01).name('Glass Refraction');
 
-const geoFolder = gui.addFolder('Geometry');
-geoFolder.add(uniforms.uScale, 'value', 0.5, 5.0, 0.1).name('Macro Scale');
-geoFolder.add(uniforms.uSharpness, 'value', 0.1, 5.0, 0.1).name('Band Sharpness');
-geoFolder.add(uniforms.uDeformation, 'value', 0.0, 2.0, 0.01).name('Lens Deformation');
+    const geoFolder = gui.addFolder('Geometry');
+    geoFolder.add(uniforms.uScale, 'value', 0.5, 5.0, 0.1).name('Macro Scale');
+    geoFolder.add(uniforms.uSharpness, 'value', 0.1, 5.0, 0.1).name('Band Sharpness');
+    geoFolder.add(uniforms.uDeformation, 'value', 0.0, 2.0, 0.01).name('Lens Deformation');
 
-const styleFolder = gui.addFolder('Style & Motion');
-styleFolder.add(uniforms.uSpeed, 'value', 0.0, 2.0, 0.01).name('Speed');
-styleFolder.add(uniforms.uBrightness, 'value', 0.1, 1.5, 0.01).name('Brightness');
-styleFolder.addColor(uniforms.uColorTint, 'value').name('Global Tint');
-styleFolder.add(uniforms.uFilmGrain, 'value', 0.0, 0.2, 0.001).name('Film Grain');
+    const styleFolder = gui.addFolder('Style & Motion');
+    styleFolder.add(uniforms.uSpeed, 'value', 0.0, 2.0, 0.01).name('Speed');
+    styleFolder.add(uniforms.uBrightness, 'value', 0.1, 1.5, 0.01).name('Brightness');
+    styleFolder.addColor(uniforms.uColorTint, 'value').name('Global Tint');
+    styleFolder.add(uniforms.uFilmGrain, 'value', 0.0, 0.2, 0.001).name('Film Grain');
+}
 
 // 6. Animation Loop
 const clock = new THREE.Clock();

@@ -125,6 +125,15 @@ function init() {
 
     loadMessages('chat');
     fetchFreeModels();
+
+    // Close sidebars when clicking main content on mobile
+    elements.mainChat.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) {
+            elements.sidebarLeft.classList.remove('open');
+            elements.sidebarRight.classList.remove('open');
+            elements.menuToggle.classList.remove('active');
+        }
+    });
 }
 
 
@@ -312,12 +321,14 @@ function autoResizeInput() {
 function toggleMobileMenu() {
     elements.sidebarLeft.classList.toggle('open');
     elements.sidebarRight.classList.remove('open');
+    elements.menuToggle.classList.toggle('active');
 }
 
 // Add a simple way to toggle right sidebar too if needed
 function toggleRightSidebar() {
     elements.sidebarRight.classList.toggle('open');
     elements.sidebarLeft.classList.remove('open');
+    elements.menuToggle.classList.remove('active');
 }
 
 // Close sidebars on resize
@@ -325,6 +336,7 @@ window.addEventListener('resize', () => {
     if (window.innerWidth > 1024) {
         elements.sidebarLeft.classList.remove('open');
         elements.sidebarRight.classList.remove('open');
+        elements.menuToggle.classList.remove('active');
     }
 });
 

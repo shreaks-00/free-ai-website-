@@ -36,9 +36,11 @@
                 <a href="chat.html" class="btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">Launch Chat</a>
             </nav>
             <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Menu">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </button>
         </header>
 
@@ -366,12 +368,14 @@
         if (menuToggle && navLinks) {
             menuToggle.addEventListener('click', () => {
                 navLinks.classList.toggle('active');
+                menuToggle.classList.toggle('active');
             });
             
             // Close menu when clicking a link
             navLinks.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     navLinks.classList.remove('active');
+                    menuToggle.classList.remove('active');
                 });
             });
         }
